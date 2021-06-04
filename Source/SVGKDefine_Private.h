@@ -8,23 +8,20 @@ SVGKDefine define some common macro used for private header.
 #define SVGKDefine_Private_h
 
 #import "SVGKDefine.h"
-@import CocoaLumberjack;
+#ifdef __OBJC__
+ #import <Foundation/Foundation.h>
+ #include <os/log.h>
+#endif
 
 // These macro is only used inside framework project, does not expose to public header and effect user's define
 
 #define SVGKIT_LOG_CONTEXT 556
 
-#define SVGKitLogError(frmt, ...)   LOG_MAYBE(NO,                LOG_LEVEL_DEF, DDLogFlagError,   SVGKIT_LOG_CONTEXT, nil, __PRETTY_FUNCTION__, frmt, ##__VA_ARGS__)
-#define SVGKitLogWarn(frmt, ...)    LOG_MAYBE(LOG_ASYNC_ENABLED, LOG_LEVEL_DEF, DDLogFlagWarning, SVGKIT_LOG_CONTEXT, nil, __PRETTY_FUNCTION__, frmt, ##__VA_ARGS__)
-#define SVGKitLogInfo(frmt, ...)    LOG_MAYBE(LOG_ASYNC_ENABLED, LOG_LEVEL_DEF, DDLogFlagInfo,    SVGKIT_LOG_CONTEXT, nil, __PRETTY_FUNCTION__, frmt, ##__VA_ARGS__)
-#define SVGKitLogDebug(frmt, ...)   LOG_MAYBE(LOG_ASYNC_ENABLED, LOG_LEVEL_DEF, DDLogFlagDebug,   SVGKIT_LOG_CONTEXT, nil, __PRETTY_FUNCTION__, frmt, ##__VA_ARGS__)
-#define SVGKitLogVerbose(frmt, ...) LOG_MAYBE(LOG_ASYNC_ENABLED, LOG_LEVEL_DEF, DDLogFlagVerbose, SVGKIT_LOG_CONTEXT, nil, __PRETTY_FUNCTION__, frmt, ##__VA_ARGS__)
-
-#if DEBUG
-static const int ddLogLevel = DDLogLevelVerbose;
-#else
-static const int ddLogLevel = DDLogLevelWarning;
-#endif
+#define SVGKitLogError(frmt, ...) os_log( OS_LOG_DEFAULT, frmt, ##__VA_ARGS__)
+#define SVGKitLogWarn(frmt, ...) os_log( OS_LOG_DEFAULT, frmt, ##__VA_ARGS__)
+#define SVGKitLogInfo(frmt, ...) os_log( OS_LOG_DEFAULT, frmt, ##__VA_ARGS__)
+#define SVGKitLogDebug(frmt, ...) os_log( OS_LOG_DEFAULT, frmt, ##__VA_ARGS__)
+#define SVGKitLogVerbose(frmt, ...) os_log( OS_LOG_DEFAULT, frmt, ##__VA_ARGS__)
 
 #if SVGKIT_MAC
 #define NSStringFromCGRect(rect) NSStringFromRect(rect)
